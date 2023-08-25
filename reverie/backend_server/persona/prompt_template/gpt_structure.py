@@ -11,7 +11,13 @@ import time
 
 from utils import *
 
-openai.api_key = openai_api_key
+# to get proper authentication, make sure to use a valid key that's listed in
+# the --api-keys flag. if no flag value is provided, the `api_key` will be ignored.
+openai.api_key = "EMPTY"
+openai.api_base = "http://localhost:8000/v1"
+
+model = "vicuna-7b-v1.3"
+
 
 def temp_sleep(seconds=0.1):
   time.sleep(seconds)
@@ -20,7 +26,7 @@ def ChatGPT_single_request(prompt):
   temp_sleep()
 
   completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
+    model=model, 
     messages=[{"role": "user", "content": prompt}]
   )
   return completion["choices"][0]["message"]["content"]
@@ -46,7 +52,7 @@ def GPT4_request(prompt):
 
   try: 
     completion = openai.ChatCompletion.create(
-    model="gpt-4", 
+    model=model, 
     messages=[{"role": "user", "content": prompt}]
     )
     return completion["choices"][0]["message"]["content"]
@@ -71,7 +77,7 @@ def ChatGPT_request(prompt):
   # temp_sleep()
   try: 
     completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
+    model=model, 
     messages=[{"role": "user", "content": prompt}]
     )
     return completion["choices"][0]["message"]["content"]
@@ -209,7 +215,7 @@ def GPT_request(prompt, gpt_parameter):
   temp_sleep()
   try: 
     response = openai.Completion.create(
-                model=gpt_parameter["engine"],
+                model=model,
                 prompt=prompt,
                 temperature=gpt_parameter["temperature"],
                 max_tokens=gpt_parameter["max_tokens"],
